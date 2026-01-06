@@ -23,8 +23,17 @@ logger.setLevel(logging.INFO)
 
 
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
+ai_model = "gemini-flash-latest"
+
+# See:
+# https://www.reddit.com/r/n8n/comments/1mukaep/how_to_connect_alexa_to_gemini_a_stepbystep_guide/
+# https://share.google/aimode/uZuYWFJgGURJDgxOR
+# https://community.home-assistant.io/t/how-to-make-alexa-use-different-voices-emotions-and-emphasis/570887
+alexa_voice = "Brian"
+prosody_rate = "150%"
+
 # API endpoint URL
-url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key={}".format(GOOGLE_API_KEY)
+url = f"https://generativelanguage.googleapis.com/v1beta/models/{ai_model}:generateContent?key={GOOGLE_API_KEY}"
 # Headers for the request
 headers = {
     'Content-Type': 'application/json',
@@ -69,7 +78,7 @@ class LaunchRequestHandler(AbstractRequestHandler):
             
         return (
             handler_input.response_builder
-                .speak(speak_output)
+                .speak(f"<voice name=\'{alexa_voice}\'><prosody rate=\'{prosody_rate}\'>{speak_output}</prosody></voice>")
                 .ask(speak_output)
                 .response
         )
@@ -107,11 +116,11 @@ class ChatIntentHandler(AbstractRequestHandler):
             }
             data["contents"].append(response_text)
         else:
-            speak_output = "I did not receive a response to your request"
+            speak_output = "I did not receive a response to your request. You may have run out ot Google Gemini API calls."
 
         return (
             handler_input.response_builder
-                .speak(speak_output)
+                .speak(f"<voice name=\'{alexa_voice}\'><prosody rate=\'{prosody_rate}\'>{speak_output}</prosody></voice>")
                 .ask("Any other questions?")
                 .response
         )
@@ -130,7 +139,7 @@ class CancelOrStopIntentHandler(AbstractRequestHandler):
 
         return (
             handler_input.response_builder
-                .speak(speak_output)
+                .speak(f"<voice name=\'{alexa_voice}\'><prosody rate=\'{prosody_rate}\'>{speak_output}</prosody></voice>")
                 .response
         )
 
@@ -152,7 +161,7 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
 
         return (
             handler_input.response_builder
-                .speak(speak_output)
+                .speak(f"<voice name=\'{alexa_voice}\'><prosody rate=\'{prosody_rate}\'>{speak_output}</prosody></voice>")
                 .ask(speak_output)
                 .response
         )

@@ -23,7 +23,8 @@ logger.setLevel(logging.INFO)
 
 
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
-ai_model = "gemini-flash-latest"
+# ai_model = "gemini-flash-latest"
+ai_model = "gemini-flash-lite-latest"
 
 # See:
 # https://www.reddit.com/r/n8n/comments/1mukaep/how_to_connect_alexa_to_gemini_a_stepbystep_guide/

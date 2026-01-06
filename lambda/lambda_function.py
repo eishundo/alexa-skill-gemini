@@ -116,7 +116,7 @@ class ChatIntentHandler(AbstractRequestHandler):
             }
             data["contents"].append(response_text)
         else:
-            speak_output = "I did not receive a response to your request. You may have run out ot Google Gemini API calls."
+            speak_output = "I did not receive a response to your request. You may have reached the free daily limit of 5 requests per minute or 20 requests per day."
 
         return (
             handler_input.response_builder
